@@ -1,0 +1,29 @@
+{
+  "name": "greeks",
+  "version": "1.0.0",
+  "description": "Option greeks - delta, gamma, theta, vega, rho",
+  "main": "greeks.js",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MattL922/greeks.git"
+  },
+  "keywords": [
+    "option",
+    "greeks"
+  ],
+  "author": "Matt Loppatto <mattloppatto@gmail.com> (https://github.com/MattL922)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MattL922/greeks/issues"
+  },
+  "homepage": "https://github.com/MattL922/greeks",
+  "devDependencies": {
+    "mocha": "2.0.1"
+  },
+  "dependencies": {
+    "black-scholes": "1.0.2"
+  }
+}
