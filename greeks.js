@@ -1,7 +1,8 @@
 /**
  * Calculation of option greeks.
- * @module
+ * @module greeks
  * @author Matt Loppatto
+ * @copyright 2014 Matt Loppatto
  */
 
 var bs = require("black-scholes");
