@@ -110,7 +110,7 @@ function _callRho(s, k, t, v, r)
  * @param {Number} t Time to experiation in years
  * @param {Number} v Volatility as a decimal
  * @param {Number} r Anual risk-free interest rate as a decimal
- * @returns {Number} The vega of the call option
+ * @returns {Number} The vega of the option
  */
 function getVega(s, k, t, v, r)
 {
