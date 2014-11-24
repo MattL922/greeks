@@ -72,7 +72,7 @@ function _callDelta(s, k, t, v, r)
  */
 function _putDelta(s, k, t, v, r)
 {
-  return 1 - callDelta(s, k, t, v, r);
+  return _callDelta(s, k, t, v, r) - 1;
 }
 
 /**
