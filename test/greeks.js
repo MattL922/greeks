@@ -39,5 +39,18 @@ describe("Greeks", function()
       assert.equal(greeks.getDelta(100.01, 100, 0, 0, .0015, "call"), 1);
       assert.equal(greeks.getDelta(99.99, 100, 0, 0, .0015, "put"), -1);
     });
-  });
+  }); // end delta
+  describe("Vega", function()
+  {
+    it("should return ~.24", function()
+    {
+      assert.equal(greeks.getVega(206.35, 206, .086, .1, .0015), 0.24070106056306836);
+    });
+    it("should return 0", function()
+    {
+      assert.equal(greeks.getVega(100, 100, 0, .1, .0015), 0);
+      assert.equal(greeks.getVega(100, 100, 0, 0, .0015), 0);
+      assert.equal(greeks.getVega(100, 100, .1, 0, .0015), 0);
+    });
+  }); // end vega
 });

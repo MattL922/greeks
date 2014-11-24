@@ -102,7 +102,7 @@ function _callRho(s, k, t, v, r)
 }
 
 /**
- * Calculates the vega of a call option.
+ * Calculates the vega of a call and put option.
  *
  * @private
  * @param {Number} s Current price of the underlying
@@ -112,9 +112,10 @@ function _callRho(s, k, t, v, r)
  * @param {Number} r Anual risk-free interest rate as a decimal
  * @returns {Number} The vega of the call option
  */
-function _callVega(s, k, t, v, r)
+function getVega(s, k, t, v, r)
 {
-  return s * Math.sqrt(t) * _stdNormDensity(bs.getW(s, k, t, v, r));
+  var w = bs.getW(s, k, t, v, r);
+  return (isFinite(w)) ? (s * Math.sqrt(t) * _stdNormDensity(w) / 100) : 0;
 }
 
 /**
@@ -135,5 +136,6 @@ function _callTheta(s, k, t, v, r)
 }
 
 module.exports = {
-  getDelta: getDelta
+  getDelta: getDelta,
+  getVega: getVega
 };
