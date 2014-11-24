@@ -123,3 +123,7 @@ function _callTheta(s, k, t, v, r)
   var w = bs.getW(s, k, t, v, r);
   return v * s * _stdNormDensity(w) / (2 * Math.sqrt(t)) + k * r * Math.pow(Math.E, -1 * r * t) * bs.stdNormCDF(w - v * Math.sqrt(t));
 }
+
+module.exports = {
+  getDelta: getDelta
+};
