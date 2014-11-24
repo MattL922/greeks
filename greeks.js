@@ -56,7 +56,16 @@ function getDelta(s, k, t, v, r, callPut)
 function _callDelta(s, k, t, v, r)
 {
   var w = bs.getW(s, k, t, v, r);
-  return bs.stdNormCDF(w);
+  var delta = null;
+  if(!isFinite(w))
+  {
+    delta = (s > k) ? 1 : 0;
+  }
+  else
+  {
+    delta = bs.stdNormCDF(w);
+  }
+  return delta;
 }
 
 /**
@@ -72,7 +81,8 @@ function _callDelta(s, k, t, v, r)
  */
 function _putDelta(s, k, t, v, r)
 {
-  return _callDelta(s, k, t, v, r) - 1;
+  var delta = _callDelta(s, k, t, v, r) - 1;
+  return (delta == -1 && k == s) ? 0 : delta;
 }
 
 /**
