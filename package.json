@@ -1,7 +1,7 @@
 {
   "name": "greeks",
   "version": "1.0.0",
-  "description": "Option greeks - delta, gamma, theta, vega, rho",
+  "description": "Calculations of option greeks - delta, gamma, theta, vega, rho",
   "main": "greeks.js",
   "scripts": {
     "test": "node_modules/mocha/bin/mocha"
@@ -12,7 +12,12 @@
   },
   "keywords": [
     "option",
-    "greeks"
+    "greeks",
+    "delta",
+    "gamma",
+    "theta",
+    "vega",
+    "rho"
   ],
   "author": "Matt Loppatto <mattloppatto@gmail.com> (https://github.com/MattL922)",
   "license": "MIT",
