@@ -24,6 +24,7 @@ greeks.getDelta(100, 100, .086, .1, .0015, "put"); // -0.49239592575544344
 greeks.getGamma(206.35, 206, .086, .1, .0015); // 0.06573105549942765
 
 // Vega - call and put vegas are equal at a given strike
+// Note: vega is calculated per 1 percentage point change in volatility
 greeks.getVega(206.35, 206, .086, .1, .0015); // 0.24070106056306836
 
 // Theta - the default scale is 365 (days per year)
