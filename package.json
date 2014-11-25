@@ -24,6 +24,6 @@
     "mocha": "2.0.1"
   },
   "dependencies": {
-    "black-scholes": "1.0.3"
+    "black-scholes": "1.1.0"
   }
 }
