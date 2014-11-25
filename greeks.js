@@ -120,6 +120,32 @@ function getVega(s, k, t, v, r)
 }
 
 /**
+ * Calculates the theta of an option.
+ *
+ * @private
+ * @param {Number} s Current price of the underlying
+ * @param {Number} k Strike price
+ * @param {Number} t Time to experiation in years
+ * @param {Number} v Volatility as a decimal
+ * @param {Number} r Anual risk-free interest rate as a decimal
+ * @param {String} callPut The type of option to be priced - "call" or "put"
+ * @param {String} [scale=365] The number of days to scale theta by - usually 365 or 252
+ * @returns {Number} The theta of the option
+ */
+function getTheta(s, k, t, v, r, callPut, scale)
+{
+  var scale = scale || 365;
+  if(callPut === "call")
+  {
+    return _callTheta(s, k, t, v, r) / scale;
+  }
+  else // put
+  {
+    return _putTheta(s, k, t, v, r) / scale;
+  }
+}
+
+/**
  * Calculates the theta of a call option.
  *
  * @private
@@ -133,7 +159,38 @@ function getVega(s, k, t, v, r)
 function _callTheta(s, k, t, v, r)
 {
   var w = bs.getW(s, k, t, v, r);
-  return v * s * _stdNormDensity(w) / (2 * Math.sqrt(t)) + k * r * Math.pow(Math.E, -1 * r * t) * bs.stdNormCDF(w - v * Math.sqrt(t));
+  if(isFinite(w))
+  {
+    return -1 * v * s * _stdNormDensity(w) / (2 * Math.sqrt(t)) - k * r * Math.pow(Math.E, -1 * r * t) * bs.stdNormCDF(w - v * Math.sqrt(t));
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+/**
+ * Calculates the theta of a put option.
+ *
+ * @private
+ * @param {Number} s Current price of the underlying
+ * @param {Number} k Strike price
+ * @param {Number} t Time to experiation in years
+ * @param {Number} v Volatility as a decimal
+ * @param {Number} r Anual risk-free interest rate as a decimal
+ * @returns {Number} The theta of the put option
+ */
+function _putTheta(s, k, t, v, r)
+{
+  var w = bs.getW(s, k, t, v, r);
+  if(isFinite(w))
+  {
+    return -1 * v * s * _stdNormDensity(w) / (2 * Math.sqrt(t)) + k * r * Math.pow(Math.E, -1 * r * t) * bs.stdNormCDF(v * Math.sqrt(t) - w);
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 /**
@@ -156,5 +213,6 @@ function getGamma(s, k, t, v, r)
 module.exports = {
   getDelta: getDelta,
   getVega: getVega,
-  getGamma: getGamma
+  getGamma: getGamma,
+  getTheta: getTheta
 };

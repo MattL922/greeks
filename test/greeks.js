@@ -66,4 +66,29 @@ describe("Greeks", function()
       assert.equal(greeks.getGamma(100, 100, 0, 0, .0015), 0);
     });
   }); // end gamma
+  describe("Theta", function()
+  {
+    it("should return non-zero theta", function()
+    {
+      assert.equal(greeks.getTheta(206.35, 206, .086, .1, .0015, "call"), -0.03877971361524501);
+      assert.equal(greeks.getTheta(206.35, 206, .086, .1, .0015, "put"), -0.0379332474739548);
+      assert.equal(greeks.getTheta(206.35, 206, .086, .1, .0015, "call", 252), -0.05616902964112869);
+      assert.equal(greeks.getTheta(206.35, 206, .086, .1, .0015, "put", 252), -0.054942997333307556);
+    });
+    it("should return 0", function()
+    {
+      assert.equal(greeks.getTheta(100, 100, 0, .1, .0015, "call"), 0);
+      assert.equal(greeks.getTheta(100, 100, 0, .1, .0015, "put"), 0);
+      assert.equal(greeks.getTheta(100, 100, 0, .1, .0015, "call", 252), 0);
+      assert.equal(greeks.getTheta(100, 100, 0, .1, .0015, "put", 252), 0);
+      assert.equal(greeks.getTheta(100, 100, .1, 0, .0015, "call"), 0);
+      assert.equal(greeks.getTheta(100, 100, .1, 0, .0015, "put"), 0);
+      assert.equal(greeks.getTheta(100, 100, .1, 0, .0015, "call", 252), 0);
+      assert.equal(greeks.getTheta(100, 100, .1, 0, .0015, "put", 252), 0);
+      assert.equal(greeks.getTheta(100, 100, 0, 0, .0015, "call"), 0);
+      assert.equal(greeks.getTheta(100, 100, 0, 0, .0015, "put"), 0);
+      assert.equal(greeks.getTheta(100, 100, 0, 0, .0015, "call", 252), 0);
+      assert.equal(greeks.getTheta(100, 100, 0, 0, .0015, "put", 252), 0);
+    });
+  }); // end theta
 });
