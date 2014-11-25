@@ -91,4 +91,29 @@ describe("Greeks", function()
       assert.equal(greeks.getTheta(100, 100, 0, 0, .0015, "put", 252), 0);
     });
   }); // end theta
+  describe("Rho", function()
+  {
+    it("should return non-zero rho", function()
+    {
+      assert.equal(greeks.getRho(206.35, 206, .086, .1, .0015, "call"), 0.09193271711465777);
+      assert.equal(greeks.getRho(206.35, 206, .086, .1, .0015, "put"), -0.08520443071933861);
+      assert.equal(greeks.getRho(206.35, 206, .086, .1, .0015, "call", 10000), 0.0009193271711465777);
+      assert.equal(greeks.getRho(206.35, 206, .086, .1, .0015, "put", 10000), -0.0008520443071933862);
+      // only the call has a non-zero rho when: v=0, t>0, s>k
+      assert.equal(greeks.getRho(206.35, 206, .086, 0, .0015, "call"), 0.17713714783399637);
+      // only the put has a non-zero rho when: v=0, t>0, s<k
+      assert.equal(greeks.getRho(205.35, 206, .086, 0, .0015, "put"), -0.17713714783399637);
+    });
+    it("should return 0", function()
+    {
+      assert.equal(greeks.getRho(100, 100, 0, .1, .0015, "call"), 0);
+      assert.equal(greeks.getRho(100, 100, 0, .1, .0015, "put"), 0);
+      assert.equal(greeks.getRho(100, 100, 0, 0, .0015, "call"), 0);
+      assert.equal(greeks.getRho(100, 100, 0, 0, .0015, "put"), 0);
+      // only the put has a rho of zero when: v=0, t>0, s>k
+      assert.equal(greeks.getRho(206.35, 206, .086, 0, .0015, "put"), 0);
+      // only the call has a rho of zero when: v=0, t>0, s<k
+      assert.equal(greeks.getRho(205.35, 206, .086, 0, .0015, "call"), 0);
+    });
+  }); // end rho
 });

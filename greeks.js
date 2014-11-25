@@ -28,7 +28,7 @@ function _stdNormDensity(x)
  * @param {Number} t Time to experiation in years
  * @param {Number} v Volatility as a decimal
  * @param {Number} r Anual risk-free interest rate as a decimal
- * @param {String} callPut The type of option to be priced - "call" or "put"
+ * @param {String} callPut The type of option - "call" or "put"
  * @returns {Number} The delta of the option
  */
 function getDelta(s, k, t, v, r, callPut)
@@ -87,6 +87,31 @@ function _putDelta(s, k, t, v, r)
 }
 
 /**
+ * Calculates the rho of an option.
+ *
+ * @param {Number} s Current price of the underlying
+ * @param {Number} k Strike price
+ * @param {Number} t Time to experiation in years
+ * @param {Number} v Volatility as a decimal
+ * @param {Number} r Anual risk-free interest rate as a decimal
+ * @param {String} callPut The type of option - "call" or "put"
+ * @param {String} [scale=100] The value to scale rho by (100=100BPS=1%, 10000=1BPS=.01%)
+ * @returns {Number} The rho of the option
+ */
+function getRho(s, k, t, v, r, callPut, scale)
+{
+  scale = scale || 100;
+  if(callPut === "call")
+  {
+    return _callRho(s, k, t, v, r) / scale;
+  }
+  else // put
+  {
+    return _putRho(s, k, t, v, r) / scale;
+  }
+}
+
+/**
  * Calculates the rho of a call option.
  *
  * @private
@@ -99,13 +124,44 @@ function _putDelta(s, k, t, v, r)
  */
 function _callRho(s, k, t, v, r)
 {
-  return k * t * Math.pow(Math.E, -1 * r * t) * bs.stdNormCDF(bs.getW(s, k, t, v, r) - v * Math.sqrt(t));
+  var w = bs.getW(s, k, t, v, r);
+  if(!isNaN(w))
+  {
+    return k * t * Math.pow(Math.E, -1 * r * t) * bs.stdNormCDF(w - v * Math.sqrt(t));
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+/**
+ * Calculates the rho of a put option.
+ *
+ * @private
+ * @param {Number} s Current price of the underlying
+ * @param {Number} k Strike price
+ * @param {Number} t Time to experiation in years
+ * @param {Number} v Volatility as a decimal
+ * @param {Number} r Anual risk-free interest rate as a decimal
+ * @returns {Number} The rho of the put option
+ */
+function _putRho(s, k, t, v, r)
+{
+  var w = bs.getW(s, k, t, v, r);
+  if(!isNaN(w))
+  {
+    return -1 * k * t * Math.pow(Math.E, -1 * r * t) * bs.stdNormCDF(v * Math.sqrt(t) - w);
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 /**
  * Calculates the vega of a call and put option.
  *
- * @private
  * @param {Number} s Current price of the underlying
  * @param {Number} k Strike price
  * @param {Number} t Time to experiation in years
@@ -122,19 +178,18 @@ function getVega(s, k, t, v, r)
 /**
  * Calculates the theta of an option.
  *
- * @private
  * @param {Number} s Current price of the underlying
  * @param {Number} k Strike price
  * @param {Number} t Time to experiation in years
  * @param {Number} v Volatility as a decimal
  * @param {Number} r Anual risk-free interest rate as a decimal
- * @param {String} callPut The type of option to be priced - "call" or "put"
+ * @param {String} callPut The type of option - "call" or "put"
  * @param {String} [scale=365] The number of days to scale theta by - usually 365 or 252
  * @returns {Number} The theta of the option
  */
 function getTheta(s, k, t, v, r, callPut, scale)
 {
-  var scale = scale || 365;
+  scale = scale || 365;
   if(callPut === "call")
   {
     return _callTheta(s, k, t, v, r) / scale;
@@ -196,7 +251,6 @@ function _putTheta(s, k, t, v, r)
 /**
  * Calculates the gamma of a call and put option.
  *
- * @private
  * @param {Number} s Current price of the underlying
  * @param {Number} k Strike price
  * @param {Number} t Time to experiation in years
@@ -214,5 +268,6 @@ module.exports = {
   getDelta: getDelta,
   getVega: getVega,
   getGamma: getGamma,
-  getTheta: getTheta
+  getTheta: getTheta,
+  getRho: getRho
 };
