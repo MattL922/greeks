@@ -1,5 +1,6 @@
 /**
  * Calculation of option greeks.
+ * See {@link http://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model#The_Greeks|Wikipedia}
  * @module greeks
  * @author Matt Loppatto
  * @copyright 2014 Matt Loppatto
@@ -135,7 +136,25 @@ function _callTheta(s, k, t, v, r)
   return v * s * _stdNormDensity(w) / (2 * Math.sqrt(t)) + k * r * Math.pow(Math.E, -1 * r * t) * bs.stdNormCDF(w - v * Math.sqrt(t));
 }
 
+/**
+ * Calculates the gamma of a call and put option.
+ *
+ * @private
+ * @param {Number} s Current price of the underlying
+ * @param {Number} k Strike price
+ * @param {Number} t Time to experiation in years
+ * @param {Number} v Volatility as a decimal
+ * @param {Number} r Anual risk-free interest rate as a decimal
+ * @returns {Number} The gamma of the option
+ */
+function getGamma(s, k, t, v, r)
+{
+  var w = bs.getW(s, k, t, v, r);
+  return (isFinite(w)) ? (_stdNormDensity(w) / (s * v * Math.sqrt(t))) : 0;
+}
+
 module.exports = {
   getDelta: getDelta,
-  getVega: getVega
+  getVega: getVega,
+  getGamma: getGamma
 };

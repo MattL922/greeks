@@ -53,4 +53,17 @@ describe("Greeks", function()
       assert.equal(greeks.getVega(100, 100, .1, 0, .0015), 0);
     });
   }); // end vega
+  describe("Gamma", function()
+  {
+    it("should return ~.065", function()
+    {
+      assert.equal(greeks.getGamma(206.35, 206, .086, .1, .0015), 0.06573105549942765);
+    });
+    it("should return 0", function()
+    {
+      assert.equal(greeks.getGamma(100, 100, 0, .1, .0015), 0);
+      assert.equal(greeks.getGamma(100, 100, .1, 0, .0015), 0);
+      assert.equal(greeks.getGamma(100, 100, 0, 0, .0015), 0);
+    });
+  }); // end gamma
 });
